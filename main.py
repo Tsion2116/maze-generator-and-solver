@@ -27,6 +27,7 @@ START_X = (WIDTH - (C * CELL_SIZE)) // 2
 START_Y = (HEIGHT - (R * CELL_SIZE)) //2
 
 def draw_maze():
+  # draw internal walls
   for row in range(R):
     for col in range(C):
 
@@ -34,7 +35,7 @@ def draw_maze():
       y = START_Y + row * CELL_SIZE
 
       # Draw top wall
-      if north_wall[row][col] == 1:
+      if north_wall[row + 1][col] == 1:
         pygame.draw.line(
           screen,
           BLACK,
@@ -44,7 +45,7 @@ def draw_maze():
         )
 
       # Draw right wall
-      if east_wall[row][col] == 1:
+      if east_wall[row][col + 1] == 1:
         pygame.draw.line(
           screen,
           BLACK,
@@ -53,32 +54,32 @@ def draw_maze():
           2
           )
     # Draw the bottom row edge
-    for col in range(C):
-      x = START_X + col * CELL_SIZE
-      y = START_Y + R * CELL_SIZE
-      
-      if north_wall[R][col] == 1:
-        pygame.draw.line(
-          screen,
-          BLACK,
-          (x,y),
-          (x + CELL_SIZE, y),
-          2
-        )
-      
-    #Draw the left column edge
-    for row in range(R):
-      x = START_X + 0
-      y = START_Y + row * CELL_SIZE
-      
-      if east_wall[row][0] == 1:
-        pygame.draw.line(
-          screen,
-          BLACK,
-          (x,y),
-          (x, y + CELL_SIZE),
-          2
-        ) 
+  for col in range(C):
+    x = START_X + col * CELL_SIZE
+    y = START_Y + R * CELL_SIZE
+    
+    if north_wall[R][col] == 1:
+      pygame.draw.line(
+        screen,
+        BLACK,
+        (x,y),
+        (x + CELL_SIZE, y),
+        2
+      )
+    
+  #Draw the left column edge
+  for row in range(R):
+    x = START_X + 0
+    y = START_Y + row * CELL_SIZE
+    
+    if east_wall[row][0] == 1:
+      pygame.draw.line(
+        screen,
+        BLACK,
+        (x,y),
+        (x, y + CELL_SIZE),
+        2
+      ) 
     
 
 
