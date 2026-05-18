@@ -22,9 +22,15 @@ CELL_SIZE = 50
 north_wall = [[1] * C for i in range(R+1)]
 east_wall = [[1] * (C+1) for i in range(R)]
 
-# TEST WALL REMOVAL
-north_wall[1][0] = 0
-east_wall[2][10] = 0
+#visited array to keep track of which cells have been visited during maze generation
+visited = [[False] * C for _ in range(R)]
+
+#starting position of the mouse in the maze
+current_row = 0
+current_col = 0
+
+#mark the starting cell as visited
+visited[current_row][current_col] = True
 
 #center the the grid starting 
 START_X = (WIDTH - (C * CELL_SIZE)) // 2
@@ -51,7 +57,66 @@ def remove_wall(current_row, current_col, next_row, next_col):
     # moving LEFT
     elif next_col == current_col - 1:
         east_wall[current_row][current_col] = 0
-        
+
+# visualize the visited cells during maze generation        
+def draw_visited():
+
+    for row in range(R):
+        for col in range(C):
+
+            if visited[row][col]:
+
+                x = START_X + col * CELL_SIZE
+                y = START_Y + row * CELL_SIZE
+
+                pygame.draw.rect(
+                    screen,
+                    (200, 200, 255),
+                    (x, y, CELL_SIZE, CELL_SIZE)
+                )
+
+# visualize the current cell being processed during maze generation
+def draw_current_cell():
+
+    x = START_X + current_col * CELL_SIZE
+    y = START_Y + current_row * CELL_SIZE
+
+    pygame.draw.rect(
+        screen,
+        (255, 100, 100),
+        (x, y, CELL_SIZE, CELL_SIZE)
+    )
+
+# the current dfs mouse cell will be drawn in red, and the visited cells will be drawn in light blue. The walls will be drawn in black. The maze will be generated using a depth-first search algorithm, and the walls will be removed as the algorithm progresses.
+
+# get a list of unvisited neighbors for a given cell
+def get_unvisited_neighbors(row, col):
+
+    neighbors = [] # list to store unvisited neighbors
+
+    # UP
+    if in_bounds(row - 1, col):
+        if not visited[row - 1][col]:
+            neighbors.append((row - 1, col))
+
+    # DOWN
+    if in_bounds(row + 1, col):
+        if not visited[row + 1][col]:
+            neighbors.append((row + 1, col))
+
+    # LEFT
+    if in_bounds(row, col - 1):
+        if not visited[row][col - 1]:
+            neighbors.append((row, col - 1))
+
+    # RIGHT
+    if in_bounds(row, col + 1):
+        if not visited[row][col + 1]:
+            neighbors.append((row, col + 1))
+
+    return neighbors
+# this will return a list of unvisited neighbors for the current cell, which will be used in the depth-first search algorithm to generate the maze. The function checks each of the four possible directions (up, down, left, right) and adds any unvisited neighbors to the list.
+
 def draw_maze():
   # draw internal walls
   for row in range(R):
@@ -106,13 +171,16 @@ def draw_maze():
         (x, y + CELL_SIZE),
         2
       ) 
-    
+
 
 #Main loop
 running = True
 
 while running:
   screen.fill(WHITE)
+
+  draw_visited()
+  draw_current_cell()
   draw_maze()
   
   for event in pygame.event.get():
