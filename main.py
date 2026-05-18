@@ -14,6 +14,7 @@ BLACK = (0,0,0)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Maze Generator")
 clock = pygame.time.Clock()
+font = pygame.font.SysFont(None, 20)
 
 #Grid dimensions
 R=10
@@ -117,8 +118,24 @@ def draw_path():
             (x2, y2),
             4
         )
-
 # the current dfs mouse cell will be drawn in red, and the visited cells will be drawn in light blue. The walls will be drawn in black. The maze will be generated using a depth-first search algorithm, and the walls will be removed as the algorithm progresses.
+
+# the draw_coordinates function will display the row and column indices of each cell in the maze, which can be helpful for debugging and understanding the maze structure. The coordinates will be displayed in the top-left corner of each cell, and they will be updated as the maze is generated.
+def draw_coordinates():
+
+    for row in range(R):
+        for col in range(C):
+
+            text = font.render(
+                f"{row},{col}",
+                True,
+                (0, 0, 0)
+            )
+
+            x = START_X + col * CELL_SIZE + 5
+            y = START_Y + row * CELL_SIZE + 5
+
+            screen.blit(text, (x, y))
 
 # get a list of unvisited neighbors for a given cell
 def get_unvisited_neighbors(row, col):
@@ -223,7 +240,9 @@ def draw_maze():
         2
       ) 
 
-    
+# set the frames per second for the game loop, which controls how fast the maze is generated and displayed on the screen. A lower FPS will make the maze generation slower and more visually appealing, while a higher FPS will make it faster but less visually distinct. In this case, an FPS of 5 is chosen to allow for a clear visualization of the maze generation process.
+FPS = 2
+
 #Main loop
 running = True
 
@@ -235,14 +254,24 @@ while running:
   draw_visited()
   draw_path()
   draw_current_cell()
+  draw_coordinates()
   draw_maze()
 
   
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       running=False
+    
+    if event.type == pygame.KEYDOWN:
+
+      if event.key == pygame.K_UP:
+          FPS += 2
+
+      elif event.key == pygame.K_DOWN:
+          FPS = max(1, FPS - 2)
       
+    
   pygame.display.update()
-  clock.tick(2)
+  clock.tick(FPS)
   
 pygame.quit()
