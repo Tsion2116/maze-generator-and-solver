@@ -22,10 +22,36 @@ CELL_SIZE = 50
 north_wall = [[1] * C for i in range(R+1)]
 east_wall = [[1] * (C+1) for i in range(R)]
 
+# TEST WALL REMOVAL
+north_wall[1][0] = 0
+east_wall[2][10] = 0
+
 #center the the grid starting 
 START_X = (WIDTH - (C * CELL_SIZE)) // 2
 START_Y = (HEIGHT - (R * CELL_SIZE)) //2
 
+# check if a cell is within the grid bounds
+def in_bounds(row, col):
+    return 0 <= row < R and 0 <= col < C
+
+def remove_wall(current_row, current_col, next_row, next_col):
+
+    # moving UP
+    if next_row == current_row - 1:
+        north_wall[current_row][current_col] = 0
+
+    # moving DOWN
+    elif next_row == current_row + 1:
+        north_wall[current_row + 1][current_col] = 0
+
+    # moving RIGHT
+    elif next_col == current_col + 1:
+        east_wall[current_row][current_col + 1] = 0
+
+    # moving LEFT
+    elif next_col == current_col - 1:
+        east_wall[current_row][current_col] = 0
+        
 def draw_maze():
   # draw internal walls
   for row in range(R):
@@ -81,7 +107,6 @@ def draw_maze():
         2
       ) 
     
-
 
 #Main loop
 running = True
