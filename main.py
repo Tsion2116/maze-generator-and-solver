@@ -34,17 +34,17 @@ maze_complete = False
 entrance_created = False
 
 # solver variables
-# solver_row = 0
-# solver_col = 0
+solver_row = 0
+solver_col = 0
 
-# solver_stack = []
+solver_stack = []
 
-# solver_visited = set()
+solver_visited = set()
 
-# dead_ends = []
+dead_ends = []
 
-# solver_started = False
-# solver_finished = False
+solver_started = False
+solver_finished = False
 
 
 #visited set to keep track of which cells have been visited during maze generation
