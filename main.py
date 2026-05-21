@@ -331,29 +331,29 @@ def draw_exit():
 
     screen.blit(text, (x, y))
 
-# def draw_solver():
+def draw_solver():
 
-#     x = START_X + solver_col * CELL_SIZE
-#     y = START_Y + solver_row * CELL_SIZE
+    x = START_X + solver_col * CELL_SIZE
+     y = START_Y + solver_row * CELL_SIZE
 
-#     pygame.draw.rect(
-#         screen,
-#         (0, 255, 0),
-#         (x, y, CELL_SIZE, CELL_SIZE)
-#     )
+     pygame.draw.rect(
+         screen,
+         (0, 255, 0),
+         (x, y, CELL_SIZE, CELL_SIZE)
+     )
     
-# def draw_dead_ends():
+ def draw_dead_ends():
 
-#     for row, col in dead_ends:
+     for row, col in dead_ends:
 
-#         x = START_X + col * CELL_SIZE
-#         y = START_Y + row * CELL_SIZE
+         x = START_X + col * CELL_SIZE
+         y = START_Y + row * CELL_SIZE
 
-#         pygame.draw.rect(
-#             screen,
-#             (100, 100, 255),
-#             (x, y, CELL_SIZE, CELL_SIZE)
-#         )
+         pygame.draw.rect(
+             screen,
+             (100, 100, 255),
+             (x, y, CELL_SIZE, CELL_SIZE)
+         )
         
 # def draw_solution_path():
 
