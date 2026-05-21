@@ -25,11 +25,14 @@ CELL_SIZE = 50
 north_wall = [[1] * C for i in range(R+1)]
 east_wall = [[1] * (C+1) for i in range(R)]
 
-#starting position of the mouse in the maze
+#starting position of the generator in the maze
 current_row = random.randint(0, R - 1)
 current_col = random.randint(0, C - 1)
 
 maze_complete = False
+
+entrance_created = False
+
 
 #visited set to keep track of which cells have been visited during maze generation
 visited = set()
@@ -148,6 +151,7 @@ def get_unvisited_neighbors(row, col):
 def generate_maze_step():
     global current_row
     global current_col
+    global maze_complete
 
     if stack:
         current_row, current_col = stack[-1]
@@ -234,11 +238,22 @@ while running:
 
     generate_maze_step()
 
+    if maze_complete and not entrance_created:
+
+        entrance_row = random.randint(0, R - 1)
+        exit_row = random.randint(0, R - 1)
+
+        east_wall[entrance_row][0] = 0
+        east_wall[exit_row][C] = 0
+
+        entrance_created = True
+
     draw_visited()
     draw_current_cell()
     draw_coordinates()
     draw_maze()
 
+    
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
