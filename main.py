@@ -29,6 +29,8 @@ east_wall = [[1] * (C+1) for i in range(R)]
 current_row = random.randint(0, R - 1)
 current_col = random.randint(0, C - 1)
 
+maze_complete = False
+
 #visited set to keep track of which cells have been visited during maze generation
 visited = set()
 stack = []
@@ -140,9 +142,9 @@ def get_unvisited_neighbors(row, col):
             neighbors.append((row, col + 1))
 
     return neighbors
-# this will return a list of unvisited neighbors for the current cell, which will be used in the depth-first search algorithm to generate the maze. The function checks each of the four possible directions (up, down, left, right) and adds any unvisited neighbors to the list.
 
-# move to the next cell in the depth-first search algorithm, removing the wall between the current cell and the next cell. The function first gets a list of unvisited neighbors for the current cell, and if there are any, it randomly selects one of them as the next cell. It then removes the wall between the current cell and the next cell using the remove_wall function, updates the current row and column to the next cell's position, and marks the next cell as visited.
+
+# move to the next cell in the depth-first search algorithm, removing the wall between the current cell and the next cell. 
 def generate_maze_step():
     global current_row
     global current_col
@@ -161,6 +163,10 @@ def generate_maze_step():
 
         else:
             stack.pop()
+    
+    if not stack:
+        maze_complete = True
+        
 
 def draw_maze():
     # draw internal walls
@@ -217,7 +223,7 @@ def draw_maze():
                 2
             ) 
 
-# set the frames per second for the game loop, which controls how fast the maze is generated and displayed on the screen. A lower FPS will make the maze generation slower and more visually appealing, while a higher FPS will make it faster but less visually distinct. In this case, an FPS of 5 is chosen to allow for a clear visualization of the maze generation process.
+# set the frames per second for the game loop 
 FPS = 2
 
 #Main loop
