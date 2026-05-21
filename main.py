@@ -26,8 +26,8 @@ north_wall = [[1] * C for i in range(R+1)]
 east_wall = [[1] * (C+1) for i in range(R)]
 
 #starting position of the mouse in the maze
-current_row = 0
-current_col = 0
+current_row = random.randint(0, R - 1)
+current_col = random.randint(0, C - 1)
 
 #visited set to keep track of which cells have been visited during maze generation
 visited = set()
