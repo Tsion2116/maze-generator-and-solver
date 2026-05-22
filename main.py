@@ -21,9 +21,6 @@ R=10
 C=10
 CELL_SIZE = 50
 
-# MODE SWITCH
-LOOP_MODE = False   # False = normal maze
-                    # True = loops + interior start/end
 
 #wall arrays
 north_wall = [[1] * C for i in range(R+1)]
@@ -60,6 +57,11 @@ visited.add((current_row, current_col))
 #center the the grid starting 
 START_X = (WIDTH - (C * CELL_SIZE)) // 2
 START_Y = (HEIGHT - (R * CELL_SIZE)) //2
+
+# MODE SWITCH
+INTERIOR_MODE = False  
+
+
 
 # check if a cell is within the grid bounds
 def in_bounds(row, col):
@@ -217,20 +219,10 @@ def generate_maze_step():
         if neighbors:
             next_row, next_col = random.choice(neighbors)
 
-            # NORMAL wall removal (DFS)
             remove_wall(current_row, current_col, next_row, next_col)
-
-            #breaking the walls between the current cell and the next cell, with a chance to create loops if LOOP_MODE is enabled
-            if LOOP_MODE and random.randint(1, 20) == 1:
-                
-                extra_neighbors = get_unvisited_neighbors(current_row, current_col)
-                if extra_neighbors:
-                    extra_row, extra_col = random.choice(extra_neighbors)
-                    remove_wall(current_row, current_col, extra_row, extra_col)
-
+            
             visited.add((next_row,next_col))
             stack.append((next_row, next_col))
-
         else:
             stack.pop()
     
@@ -249,7 +241,7 @@ def move_solver():
     # MOVE FORWARD
     if neighbors:
 
-        next_row, next_col = neighbors[0]
+        next_row, next_col = random.choice(neighbors)
 
         solver_stack.append((next_row, next_col))
 
@@ -388,8 +380,9 @@ FPS = 2
 
 # display the controls for the user
 def draw_controls():
-    text = font.render("SPACE = Toggle Mode | R = Restart | pgUP/DOWN = Speed", True, (0, 0, 0))
+    text = font.render("SPACE = Toggle Entrance Mode | R = Restart | page UP = Speed up | page Down = Speed down", True, (0, 0, 0))
     screen.blit(text, (10, 10))
+    
 
 def reset_maze():
     global north_wall, east_wall
@@ -431,13 +424,15 @@ while running:
     draw_controls()
 
     if maze_complete and not entrance_created:
-        if LOOP_MODE:
+        if INTERIOR_MODE:
+            
             # interior start & end
             entrance_row = random.randint(1, R - 2)
             entrance_col = random.randint(1, C - 2)
 
-            exit_row = random.randint(1, R - 2)
-            exit_col = random.randint(1, C - 2)
+            while (exit_row, exit_col) == (entrance_row, entrance_col):
+                exit_row = random.randint(1, R - 2)
+                exit_col = random.randint(1, C - 2)
 
         else:
             # normal exterior start & end
@@ -499,7 +494,7 @@ while running:
             elif event.key == pygame.K_DOWN:
                 FPS = max(1, FPS - 2)
             elif event.key == pygame.K_SPACE:
-                LOOP_MODE = not LOOP_MODE
+                INTERIOR_MODE = not INTERIOR_MODE
                 reset_maze()
             elif event.key == pygame.K_r:
                 reset_maze()
