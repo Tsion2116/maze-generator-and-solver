@@ -172,31 +172,31 @@ def get_unvisited_neighbors(row, col):
 
     return neighbors
 
-# def get_solver_neighbors(row, col):
+def get_solver_neighbors(row, col):
 
-#     neighbors = []
+    neighbors = []
 
-#     # UP
-#     if in_bounds(row - 1, col):
-#         if can_move_up(row, col) and (row - 1, col) not in solver_visited:
-#             neighbors.append((row - 1, col))
+    # UP
+    if in_bounds(row - 1, col):
+        if can_move_up(row, col) and (row - 1, col) not in solver_visited:
+            neighbors.append((row - 1, col))
 
-#     # DOWN
-#     if in_bounds(row + 1, col):
-#         if can_move_down(row, col) and (row + 1, col) not in solver_visited:
-#             neighbors.append((row + 1, col))
+    # DOWN
+    if in_bounds(row + 1, col):
+        if can_move_down(row, col) and (row + 1, col) not in solver_visited:
+            neighbors.append((row + 1, col))
 
-#     # LEFT
-#     if in_bounds(row, col - 1):
-#         if can_move_left(row, col) and (row, col - 1) not in solver_visited:
-#             neighbors.append((row, col - 1))
+    # LEFT
+    if in_bounds(row, col - 1):
+        if can_move_left(row, col) and (row, col - 1) not in solver_visited:
+            neighbors.append((row, col - 1))
 
-#     # RIGHT
-#     if in_bounds(row, col + 1):
-#         if can_move_right(row, col) and (row, col + 1) not in solver_visited:
-#             neighbors.append((row, col + 1))
+    # RIGHT
+    if in_bounds(row, col + 1):
+        if can_move_right(row, col) and (row, col + 1) not in solver_visited:
+            neighbors.append((row, col + 1))
 
-#     return neighbors
+    return neighbors
 
 # move to the next cell in the depth-first search algorithm, removing the wall between the current cell and the next cell. 
 def generate_maze_step():
