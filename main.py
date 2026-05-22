@@ -355,18 +355,18 @@ def draw_solver():
              (x, y, CELL_SIZE, CELL_SIZE)
          )
         
-# def draw_solution_path():
+def draw_solution_path():
 
-#     for row, col in solver_stack:
+    for row, col in solver_stack:
 
-#         x = START_X + col * CELL_SIZE
-#         y = START_Y + row * CELL_SIZE
+        x = START_X + col * CELL_SIZE
+        y = START_Y + row * CELL_SIZE
 
-#         pygame.draw.rect(
-#             screen,
-#             (255, 255, 0),  # yellow
-#             (x, y, CELL_SIZE, CELL_SIZE)
-#         )
+        pygame.draw.rect(
+            screen,
+            (255, 255, 0),  # yellow
+            (x, y, CELL_SIZE, CELL_SIZE)
+        )
 
 # set the frames per second for the game loop 
 FPS = 2
