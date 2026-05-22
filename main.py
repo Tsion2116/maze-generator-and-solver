@@ -133,6 +133,7 @@ def draw_current_cell():
 # the current dfs mouse cell will be drawn in red, and the visited cells will be drawn in light blue. The walls will be drawn in black. The maze will be generated using a depth-first search algorithm, and the walls will be removed as the algorithm progresses.
 
 # the draw_coordinates function will display the row and column indices of each cell in the maze, which can be helpful for debugging and understanding the maze structure. The coordinates will be displayed in the top-left corner of each cell, and they will be updated as the maze is generated.
+# used it to test the coordinate system and make sure the walls are being removed correctly, but it can be commented out for a cleaner visual presentation of the maze.
 # def draw_coordinates():
 
 #     for row in range(R):
@@ -216,11 +217,16 @@ def generate_maze_step():
         if neighbors:
             next_row, next_col = random.choice(neighbors)
 
+            # NORMAL wall removal (DFS)
+            remove_wall(current_row, current_col, next_row, next_col)
+
             #breaking the walls between the current cell and the next cell, with a chance to create loops if LOOP_MODE is enabled
             if LOOP_MODE and random.randint(1, 20) == 1:
-                remove_wall(current_row, current_col, next_row, next_col)
-
-            remove_wall(current_row, current_col, next_row, next_col)
+                
+                extra_neighbors = get_unvisited_neighbors(current_row, current_col)
+                if extra_neighbors:
+                    extra_row, extra_col = random.choice(extra_neighbors)
+                    remove_wall(current_row, current_col, extra_row, extra_col)
 
             visited.add((next_row,next_col))
             stack.append((next_row, next_col))
@@ -382,7 +388,7 @@ FPS = 2
 
 # display the controls for the user
 def draw_controls():
-    text = font.render("SPACE = Toggle Mode | R = Restart", True, (0, 0, 0))
+    text = font.render("SPACE = Toggle Mode | R = Restart | pgUP/DOWN = Speed", True, (0, 0, 0))
     screen.blit(text, (10, 10))
 
 def reset_maze():
