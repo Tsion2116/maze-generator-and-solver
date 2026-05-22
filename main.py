@@ -80,17 +80,17 @@ def remove_wall(current_row, current_col, next_row, next_col):
         east_wall[current_row][current_col + 1] = 0
 
 #for the solver wall check functions
-# def can_move_up(row, col):
-#     return north_wall[row][col] == 0
+def can_move_up(row, col):
+    return north_wall[row][col] == 0
 
-# def can_move_down(row, col):
-#     return north_wall[row + 1][col] == 0
+def can_move_down(row, col):
+    return north_wall[row + 1][col] == 0
 
-# def can_move_left(row, col):
-#     return east_wall[row][col] == 0
+def can_move_left(row, col):
+    return east_wall[row][col] == 0
 
-# def can_move_right(row, col):
-#     return east_wall[row][col + 1] == 0
+def can_move_right(row, col):
+    return east_wall[row][col + 1] == 0
 
 # visualize the visited cells during maze generation        
 def draw_visited():
