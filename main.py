@@ -21,6 +21,10 @@ R=10
 C=10
 CELL_SIZE = 50
 
+# MODE SWITCH
+LOOP_MODE = False   # False = normal maze
+                    # True = loops + interior start/end
+
 #wall arrays
 north_wall = [[1] * C for i in range(R+1)]
 east_wall = [[1] * (C+1) for i in range(R)]
@@ -129,21 +133,21 @@ def draw_current_cell():
 # the current dfs mouse cell will be drawn in red, and the visited cells will be drawn in light blue. The walls will be drawn in black. The maze will be generated using a depth-first search algorithm, and the walls will be removed as the algorithm progresses.
 
 # the draw_coordinates function will display the row and column indices of each cell in the maze, which can be helpful for debugging and understanding the maze structure. The coordinates will be displayed in the top-left corner of each cell, and they will be updated as the maze is generated.
-def draw_coordinates():
+# def draw_coordinates():
 
-    for row in range(R):
-        for col in range(C):
+#     for row in range(R):
+#         for col in range(C):
 
-            text = font.render(
-                f"{row},{col}",
-                True,
-                (0, 0, 0)
-            )
+#             text = font.render(
+#                 f"{row},{col}",
+#                 True,
+#                 (0, 0, 0)
+#             )
 
-            x = START_X + col * CELL_SIZE + 5
-            y = START_Y + row * CELL_SIZE + 5
+#             x = START_X + col * CELL_SIZE + 5
+#             y = START_Y + row * CELL_SIZE + 5
 
-            screen.blit(text, (x, y))
+#             screen.blit(text, (x, y))
 
 # get a list of unvisited neighbors for a given cell
 def get_unvisited_neighbors(row, col):
@@ -211,6 +215,11 @@ def generate_maze_step():
 
         if neighbors:
             next_row, next_col = random.choice(neighbors)
+
+            #breaking the walls between the current cell and the next cell, with a chance to create loops if LOOP_MODE is enabled
+            if LOOP_MODE and random.randint(1, 20) == 1:
+                remove_wall(current_row, current_col, next_row, next_col)
+
             remove_wall(current_row, current_col, next_row, next_col)
 
             visited.add((next_row,next_col))
@@ -254,7 +263,7 @@ def move_solver():
             solver_row, solver_col = solver_stack[-1]
 
     # CHECK EXIT
-    if solver_col == C - 1 and east_wall[solver_row][C] == 0:
+    if solver_row == exit_row and solver_col == exit_col:
         solver_finished = True
         
 
@@ -317,7 +326,7 @@ def draw_maze():
 def draw_entrance():
     text = font.render("START", True, (0, 150, 0))
 
-    x = START_X + 5
+    x = START_X + entrance_col * CELL_SIZE + 5
     y = START_Y + entrance_row * CELL_SIZE + CELL_SIZE // 2 - 10
 
     screen.blit(text, (x, y))
@@ -326,7 +335,7 @@ def draw_entrance():
 def draw_exit():
     text = font.render("END", True, (200, 0, 0))
 
-    x = START_X + (C - 1) * CELL_SIZE + 5
+    x = START_X + exit_col * CELL_SIZE + 5
     y = START_Y + exit_row * CELL_SIZE + CELL_SIZE // 2 - 10
 
     screen.blit(text, (x, y))
@@ -371,6 +380,41 @@ def draw_solution_path():
 # set the frames per second for the game loop 
 FPS = 2
 
+# display the controls for the user
+def draw_controls():
+    text = font.render("SPACE = Toggle Mode | R = Restart", True, (0, 0, 0))
+    screen.blit(text, (10, 10))
+
+def reset_maze():
+    global north_wall, east_wall
+    global visited, stack
+    global current_row, current_col
+    global maze_complete, entrance_created
+    global solver_stack, solver_visited, dead_ends
+    global solver_started, solver_finished
+
+    north_wall = [[1] * C for i in range(R+1)]
+    east_wall = [[1] * (C+1) for i in range(R)]
+
+    visited = set()
+    stack = []
+
+    current_row = random.randint(0, R - 1)
+    current_col = random.randint(0, C - 1)
+
+    stack.append((current_row, current_col))
+    visited.add((current_row, current_col))
+
+    maze_complete = False
+    entrance_created = False
+
+    solver_stack = []
+    solver_visited = set()
+    dead_ends = []
+
+    solver_started = False
+    solver_finished = False
+
 #Main loop
 running = True
 
@@ -378,21 +422,35 @@ while running:
     screen.fill(WHITE)
 
     generate_maze_step()
+    draw_controls()
 
     if maze_complete and not entrance_created:
+        if LOOP_MODE:
+            # interior start & end
+            entrance_row = random.randint(1, R - 2)
+            entrance_col = random.randint(1, C - 2)
 
-        entrance_row = random.randint(0, R - 1)
-        exit_row = random.randint(0, R - 1)
+            exit_row = random.randint(1, R - 2)
+            exit_col = random.randint(1, C - 2)
 
-        east_wall[entrance_row][0] = 0
-        east_wall[exit_row][C] = 0
+        else:
+            # normal exterior start & end
+            entrance_row = random.randint(0, R - 1)
+            entrance_col = 0
+
+            exit_row = random.randint(0, R - 1)
+            exit_col = C - 1
+
+            east_wall[entrance_row][0] = 0
+            east_wall[exit_row][C] = 0
 
         entrance_created = True
+
     
     if maze_complete and entrance_created and not solver_started:
 
         solver_row = entrance_row
-        solver_col = 0
+        solver_col = entrance_col
 
         solver_stack.append((solver_row, solver_col))
         solver_visited.add((solver_row, solver_col))
@@ -415,7 +473,7 @@ while running:
     if solver_started:
         draw_solver()
     
-    draw_coordinates()
+    #draw_coordinates()
     
     if entrance_created:
         draw_entrance()
@@ -434,6 +492,11 @@ while running:
 
             elif event.key == pygame.K_DOWN:
                 FPS = max(1, FPS - 2)
+            elif event.key == pygame.K_SPACE:
+                LOOP_MODE = not LOOP_MODE
+                reset_maze()
+            elif event.key == pygame.K_r:
+                reset_maze()
         
         
     pygame.display.update()
