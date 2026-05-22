@@ -389,39 +389,39 @@ while running:
 
         entrance_created = True
     
-    # if maze_complete and entrance_created and not solver_started:
+    if maze_complete and entrance_created and not solver_started:
 
-    #     solver_row = entrance_row
-    #     solver_col = 0
+        solver_row = entrance_row
+        solver_col = 0
 
-    #     solver_stack.append((solver_row, solver_col))
-    #     solver_visited.add((solver_row, solver_col))
+        solver_stack.append((solver_row, solver_col))
+        solver_visited.add((solver_row, solver_col))
 
-    #     solver_started = True
+        solver_started = True
     
-    # if maze_complete and solver_started:
-    #     move_solver()
+    if maze_complete and solver_started:
+        move_solver()
 
 
     draw_visited()
     
-    # draw_dead_ends()
+    draw_dead_ends()
     
-    # if solver_finished:
-    #     draw_solution_path()
+    if solver_finished:
+        draw_solution_path()
     
     draw_current_cell()
     
-    # if solver_started:
-    #     draw_solver()
+    if solver_started:
+        draw_solver()
     
-    # draw_coordinates()
+    draw_coordinates()
     
-    # if entrance_created:
-    #     draw_entrance()
-    #     draw_exit()
+    if entrance_created:
+        draw_entrance()
+        draw_exit()
     
-    # draw_maze()
+    draw_maze()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
