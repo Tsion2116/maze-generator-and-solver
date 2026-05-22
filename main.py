@@ -314,13 +314,13 @@ def draw_maze():
                 2
             ) 
 
-# def draw_entrance():
-#     text = font.render("START", True, (0, 150, 0))
+def draw_entrance():
+    text = font.render("START", True, (0, 150, 0))
 
-#     x = START_X + 5
-#     y = START_Y + entrance_row * CELL_SIZE + CELL_SIZE // 2 - 10
+    x = START_X + 5
+    y = START_Y + entrance_row * CELL_SIZE + CELL_SIZE // 2 - 10
 
-#     screen.blit(text, (x, y))
+    screen.blit(text, (x, y))
 
 
 # def draw_exit():
