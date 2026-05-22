@@ -323,13 +323,13 @@ def draw_entrance():
     screen.blit(text, (x, y))
 
 
-# def draw_exit():
-#     text = font.render("END", True, (200, 0, 0))
+def draw_exit():
+    text = font.render("END", True, (200, 0, 0))
 
-#     x = START_X + (C - 1) * CELL_SIZE + 5
-#     y = START_Y + exit_row * CELL_SIZE + CELL_SIZE // 2 - 10
+    x = START_X + (C - 1) * CELL_SIZE + 5
+    y = START_Y + exit_row * CELL_SIZE + CELL_SIZE // 2 - 10
 
-#     screen.blit(text, (x, y))
+    screen.blit(text, (x, y))
 
 # def draw_solver():
 
