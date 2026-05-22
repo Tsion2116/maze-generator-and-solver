@@ -44,8 +44,11 @@ Queue (BFS) - If used instead:
 ## Features
 •	Random maze generation using DFS
 •	Proper maze guarantee (all cells connected)
-•	Entrance on left edge, exit on right edge
 •	Backtracking maze solver
+• Configurable entrance/exit placement
+• Two entrance modes:
+  - Boundary Mode: entrance on left edge, exit on right edge
+  - Interior Mode: entrance and exit generated inside the maze
 
 ## Visual Indicators
 
@@ -67,7 +70,7 @@ Queue (BFS) - If used instead:
 | Increase animation speed   | `Page Up`            |
 | Decrease animation speed   | `Page Down`          |
 | Restart the maze           | `R`                  |
-
+| Toggle entrance mode       | SPACE                |
 
 ## Installation Requirements
 
