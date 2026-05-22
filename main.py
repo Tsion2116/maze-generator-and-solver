@@ -222,40 +222,40 @@ def generate_maze_step():
     if not stack:
         maze_complete = True
         
-# def move_solver():
+def move_solver():
 
-#     global solver_row, solver_col, solver_finished
+    global solver_row, solver_col, solver_finished
 
-#     if solver_finished:
-#         return
+    if solver_finished:
+        return
 
-#     neighbors = get_solver_neighbors(solver_row, solver_col)
+    neighbors = get_solver_neighbors(solver_row, solver_col)
 
-#     # MOVE FORWARD
-#     if neighbors:
+    # MOVE FORWARD
+    if neighbors:
 
-#         next_row, next_col = neighbors[0]
+        next_row, next_col = neighbors[0]
 
-#         solver_stack.append((next_row, next_col))
+        solver_stack.append((next_row, next_col))
 
-#         solver_row = next_row
-#         solver_col = next_col
+        solver_row = next_row
+        solver_col = next_col
 
-#         solver_visited.add((solver_row, solver_col))
+        solver_visited.add((solver_row, solver_col))
 
-#     # DEAD END → BACKTRACK
-#     else:
+    # DEAD END → BACKTRACK
+    else:
 
-#         dead_ends.append((solver_row, solver_col))
+        dead_ends.append((solver_row, solver_col))
 
-#         solver_stack.pop()
+        solver_stack.pop()
 
-#         if solver_stack:
-#             solver_row, solver_col = solver_stack[-1]
+        if solver_stack:
+            solver_row, solver_col = solver_stack[-1]
 
-#     # CHECK EXIT
-#     if solver_col == C - 1 and east_wall[solver_row][C] == 0:
-#         solver_finished = True
+    # CHECK EXIT
+    if solver_col == C - 1 and east_wall[solver_row][C] == 0:
+        solver_finished = True
         
 
 
