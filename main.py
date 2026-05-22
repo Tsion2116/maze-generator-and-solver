@@ -132,26 +132,6 @@ def draw_current_cell():
         (x, y, CELL_SIZE, CELL_SIZE)
     )
 
-# the current dfs mouse cell will be drawn in red, and the visited cells will be drawn in light blue. The walls will be drawn in black. The maze will be generated using a depth-first search algorithm, and the walls will be removed as the algorithm progresses.
-
-# the draw_coordinates function will display the row and column indices of each cell in the maze, which can be helpful for debugging and understanding the maze structure. The coordinates will be displayed in the top-left corner of each cell, and they will be updated as the maze is generated.
-# used it to test the coordinate system and make sure the walls are being removed correctly, but it can be commented out for a cleaner visual presentation of the maze.
-# def draw_coordinates():
-
-#     for row in range(R):
-#         for col in range(C):
-
-#             text = font.render(
-#                 f"{row},{col}",
-#                 True,
-#                 (0, 0, 0)
-#             )
-
-#             x = START_X + col * CELL_SIZE + 5
-#             y = START_Y + row * CELL_SIZE + 5
-
-#             screen.blit(text, (x, y))
-
 # get a list of unvisited neighbors for a given cell
 def get_unvisited_neighbors(row, col):
 
@@ -473,8 +453,6 @@ while running:
     
     if solver_started:
         draw_solver()
-    
-    #draw_coordinates()
     
     if entrance_created:
         draw_entrance()
